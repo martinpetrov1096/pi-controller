@@ -30,7 +30,7 @@ int main() {
     
 
     //Calling all of the programs to run here (Fan/LED)
-    App childProc[2];
+    App childProc[1];
     childProc[0] = fan;
         
         
@@ -38,7 +38,8 @@ int main() {
     for (App currProc: childProc) {
         currProc.pid = fork();
             if (currProc.pid == 0) {
-                cout << "Fork worked\n child_pid: " << currProc.pid << endl;
+                //cout << "Fork worked\n child_pid: " << currProc.pid << endl;
+                write(0, "hello", 5);
                 execl("/home/pi/Documents/pi-controller/fan_client", "./fan_clent", (char*) NULL);
 
                 //execl("/home/vlc", "/home/vlc", (char*) NULL);
