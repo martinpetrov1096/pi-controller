@@ -1,37 +1,67 @@
-/*
+#include <string>
+#include <iostream>
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/wait.h>
+
+using namespace std;
+
+class App {
+    public: 
+        pid_t pid;
+        string name;
+
+    //TODO: Add pipe here
+};
+
+
 
 int main() {
 
-    pipe p[2];  //Pipe to send/recieve commands
+    //Declare all 
+    App fan;
+    fan.name = "fan_client";
 
+
+    
 
     //Calling all of the programs to run here (Fan/LED)
-    subProcesses children[2] = {fan, led} //struct contains program name as well as pid, and pipe
+    App childProc[2];
+    childProc[0] = fan;
+        
+        
 
-    for (currProc: subprocess) {
-        currProc.pid = fork() {
-            if (currProc.pid == 0)
-                exec(currProc.name, p);
-        }
-
-
+    for (App currProc: childProc) {
+        currProc.pid = fork();
+            if (currProc.pid == 0) {
+                cout << "Fork worked\n child_pid: " << currProc.pid << endl;
+                execv(currProc.name.c_str, NULL);
+            }
     }
 
-    while(true) {
+
+
+
+    /*while(true) {
         userInput = getUserInput();
 
 
         wait for user input
 
-    }
+    }*/
 
 
 
 
+    return 0;
 }
 
 
 
 
 
-*/
+
