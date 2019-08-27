@@ -35,15 +35,15 @@ int main() {
         
         
 
-    for (App currProc: childProc) {
-        currProc.pid = fork();
-            if (currProc.pid == 0) {
-                cout << "Fork worked\n child_pid: " << currProc.pid << endl;
+    //for (App currProc: childProc) {
+        childProc[0].pid = fork();
+            if (childProc[0].pid == 0) {
+                cout << "Fork worked\n child_pid: " << childProc[0].pid << endl;
                 execl("/home/pi/Documents/pi-controller", "./fan_clent", (char*) NULL);
 
                 execl("/home/vlc", "/home/vlc", (char*) NULL);
             }
-    }
+    //}
 
 
 
