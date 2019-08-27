@@ -32,7 +32,7 @@ int main() {
 
     //Calling all of the programs to run here (Fan/LED)
     //App childProc[1];
-    vector<App> childProc(1);
+    vector<App> childProc;
     childProc.push_back(fan);
 
 
