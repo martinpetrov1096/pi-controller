@@ -1,5 +1,9 @@
 all: tower_main tower_fan
 
+clean: 
+	-rm tower_main tower_fan
+
+
 tower_main:
 	g++ -std=c++11 -o tower_main server_side.cpp
 
