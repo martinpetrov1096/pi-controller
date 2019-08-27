@@ -41,7 +41,7 @@ int main() {
                 cout << "Fork worked\n child_pid: " << currProc.pid << endl;
                 execl("/home/pi/Documents/pi-controller", "./fan_clent", (char*) NULL);
 
-                execl("/home/vlc", "/home/vlc", (char*) NULL);
+                //execl("/home/vlc", "/home/vlc", (char*) NULL);
             }
     }
 
