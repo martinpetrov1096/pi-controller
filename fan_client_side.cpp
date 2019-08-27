@@ -36,9 +36,9 @@ int main () {
             exit(0);
         } 
 
-        /*if(write (fd, &temp, strlen(temp)) < 0) {
+        if(write (fd, &temp, strlen(temp)) < 0) {
             return -1;
-        }*/
+        }
         cout << "PPID: " << getppid() << endl;
         sleep(2);
     }
