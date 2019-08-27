@@ -48,13 +48,13 @@ int main() {
 
 
 
-    /*while(true) {
-        userInput = getUserInput();
+    while(true) {
+       // userInput = getUserInput();
 
 
-        wait for user input
+       // wait for user input
 
-    }*/
+    }
 
 
 
