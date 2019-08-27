@@ -32,7 +32,7 @@ int main () {
     }*/
     
     while(true) {
-        if ( getppid() == (pid_t) 1) {   //if parent process exited, kill this child
+        if ( getppid() == 1) {   //if parent process exited, kill this child
             exit(0);
         } 
 
