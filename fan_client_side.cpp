@@ -6,6 +6,7 @@ Auto: Default - FAN SYSTEM_TEMP , e.g: FAN 42
 Manual: FAN PERCENTAGE, e.g: FAN 75%
 
 */
+#include <iostream>
 
 
 #include <stdio.h>
@@ -18,6 +19,7 @@ Manual: FAN PERCENTAGE, e.g: FAN 75%
 #include <sys/types.h>
 #include <sys/stat.h>
 
+using namespace std;
 
 int main () {
 
@@ -37,7 +39,7 @@ int main () {
         if(write (fd, &temp, strlen(temp)) < 0) {
             return -1;
         }
-
+        cout << "PPID: " << getppid << endl;
         sleep(2);
     }
 

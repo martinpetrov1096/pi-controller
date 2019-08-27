@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -19,10 +20,10 @@ class App {
 };
 
 
-
+ 
 int main() {
 
-    //Declare all 
+    //Declare all apps
     App fan;
     fan.name = "fan_client";
 
@@ -30,8 +31,11 @@ int main() {
     
 
     //Calling all of the programs to run here (Fan/LED)
-    App childProc[1];
-    childProc[0] = fan;
+    //App childProc[1];
+    vector<App> childProc(1);
+    childProc.push_back(fan);
+
+
         
         
 
@@ -39,23 +43,22 @@ int main() {
         currProc.pid = fork();
             if (currProc.pid == 0) {
                 //cout << "Fork worked\n child_pid: " << currProc.pid << endl;
-                write(0, "hello", 5);
+                write(0, "Fork Worked\n", 15);
                 execl("/home/pi/Documents/pi-controller/fan_client", "./fan_clent", (char*) NULL);
 
-                //execl("/home/vlc", "/home/vlc", (char*) NULL);
             }
     }
 
 
 
 
-    while(true) {
+    //while(true) {
        // userInput = getUserInput();
 
 
        // wait for user input
 
-    }
+    //}
 
 
 
