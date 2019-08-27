@@ -45,7 +45,7 @@ int main() {
                 //cout << "Fork worked\n child_pid: " << currProc.pid << endl;
                 write(0, "Fork Worked\n", 15);
                 chdir("/home/pi/Documents/pi-controller/");
-                execl(currProc.name.c_str, ("./" + currProc.name).c_str, (char*) NULL);
+                execl(currProc.name.c_str(), ("./" + currProc.name).c_str(), (char*) NULL);
 
             }
     }
