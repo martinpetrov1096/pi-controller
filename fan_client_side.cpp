@@ -32,14 +32,13 @@ int main () {
     }
     
     while(true) {
-        if ( getppid() == 1) {   //if parent process exited, kill this child
+        if (getppid() == 1) {   //if parent process exited, kill this child
             exit(0);
         } 
 
         if(write (fd, &temp, strlen(temp)) < 0) {
             return -1;
         }
-        cout << "PPID: " << getppid() << endl;
         sleep(2);
     }
 
