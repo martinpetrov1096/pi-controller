@@ -26,20 +26,20 @@ int main () {
     int fd;   
     const char temp[] = "50";
 
-    if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
+    /*if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", fd);
         return -1;
-    }
+    }*/
     
     while(true) {
-        if ((int) getppid == 1) {   //if parent process exited, kill this child
+        if ( getppid() == (pid_t) 1) {   //if parent process exited, kill this child
             exit(0);
         } 
 
-        if(write (fd, &temp, strlen(temp)) < 0) {
+        /*if(write (fd, &temp, strlen(temp)) < 0) {
             return -1;
-        }
-        cout << "PPID: " << getppid << endl;
+        }*/
+        cout << "PPID: " << getppid() << endl;
         sleep(2);
     }
 
