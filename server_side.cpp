@@ -25,7 +25,7 @@ int main() {
 
     //Declare all apps
     App fan;
-    fan.name = "fan_client";
+    fan.name = "tower_fan";
 
 
     
@@ -53,13 +53,13 @@ int main() {
 
 
 
-    //while(true) {
+    while(true) {
        // userInput = getUserInput();
 
 
        // wait for user input
 
-    //}
+    }
 
 
 
