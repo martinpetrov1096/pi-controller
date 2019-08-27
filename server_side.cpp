@@ -39,7 +39,7 @@ int main() {
         currProc.pid = fork();
             if (currProc.pid == 0) {
                 cout << "Fork worked\n child_pid: " << currProc.pid << endl;
-                execl(currProc.name.c_str, "./fan_clent");
+                execl(currProc.name.c_str, "./fan_clent", (char*) NULL);
             }
     }
 
