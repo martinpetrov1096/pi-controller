@@ -22,25 +22,25 @@ Manual: FAN PERCENTAGE, e.g: FAN 75%
 using namespace std;
 
 int main () {
-    cout << "working here";
+
     int fd;   
     const char temp[] = "50";
-    /*   
+     
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", fd);
         return -1;
     }
-    
+        cout << "working here" << endl;
     while(true) {
         if (getppid() == 1) {   //if parent process exited, kill this child
             exit(0);
         } 
         cout << "working loop";
         if(write (fd, &temp, strlen(temp)) < 0) {
-            cout << "fail";
+            cout << "fail" << endl;
             return -1;
         }
         sleep(2);
-    }*/
+    }
 
 }
