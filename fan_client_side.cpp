@@ -37,7 +37,7 @@ int main () {
         } 
 
         if(write (fd, &temp, strlen(temp)) < 0) {
-            return -1;
+            exit(-1);
         }
         sleep(2);
     }

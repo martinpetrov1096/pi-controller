@@ -22,12 +22,12 @@ using namespace std;
 int main () {
 
     int serial;  
-    string ledCmd; 
+    char ledCmd[50]; 
     
 
     if ((serial = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", serial);
-        return -1;
+        exit(-1);
     }
     
     while(true) {
@@ -39,7 +39,7 @@ int main () {
         
         cin >> ledCmd;
 
-        if (write(serial, ledCmd.c_str(), ledCmd.length()) < 0)
+        if (write(serial,  &ledCmd, 50) < 0)
             exit(-1);
 
         
