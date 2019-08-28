@@ -22,7 +22,7 @@ using namespace std;
 int main () {
 
     int serial;  
-    char ledCmd[50]; 
+    char ledCmd[] = "hi"; 
     
 
     if ((serial = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
@@ -37,7 +37,7 @@ int main () {
 
 
         
-        cin >> ledCmd;
+        //cin >> ledCmd;
 
         if (write(serial,  &ledCmd, 2) < 0)
             exit(-1);
