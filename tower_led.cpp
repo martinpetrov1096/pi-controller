@@ -22,7 +22,7 @@ using namespace std;
 int main () {
 
     int serial;  
-    char ledCmd[] = "hi"; 
+    const char ledCmd[] = "hi"; 
     
 
     if ((serial = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
@@ -40,11 +40,14 @@ int main () {
         
         //cin >> ledCmd;
 
-        if (write(serial,  &ledCmd, 2) < 0){
+        if (write(serial,  &ledCmd, strlen(ledCmd)) < 0){
             cout << "fail2";
+    
             exit(-1);
         }
-        
+        if(write (fd, &temp, strlen(temp)) < 0) {
+            exit(-1);
+        }
 
       
 
