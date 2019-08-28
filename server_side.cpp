@@ -44,8 +44,8 @@ int main() {
             if (currProc.pid == 0) {
                 //cout << "Fork worked\n child_pid: " << currProc.pid << endl;
                 write(0, "Fork Worked\n", 15);
-                chdir("/home/pi/Documents/pi-controller/");
-                execl( ("/home/pi/Documents/pi-controller/" + currProc.name).c_str(), ("./" + currProc.name).c_str() , (char*) NULL);
+                execl( ("/home/pi/Documents/pi-controller/" + currProc.name).c_str(), 
+                        ("./" + currProc.name).c_str() , (char*) NULL);
 
             }
     }
@@ -59,12 +59,23 @@ int main() {
 
        // wait for user input
 
+        /*
+
+        0 - Fan
+        1 - LED
+
+         cin >> UserInput
+         
+         childProc[UserInput].sendCmd(fd);  //MIGHT NOT BE POSSIBLE
+         */
+
+
     }
 
 
 
 
-    return 0;
+    exit(0);
 }
 
 

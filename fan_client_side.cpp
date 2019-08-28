@@ -28,7 +28,7 @@ int main () {
 
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", fd);
-        return -1;
+        exit(-1);
     }
     
     while(true) {
