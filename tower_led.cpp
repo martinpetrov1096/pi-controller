@@ -45,9 +45,6 @@ int main () {
     
             exit(-1);
         }
-        if(write (fd, &temp, strlen(temp)) < 0) {
-            exit(-1);
-        }
 
       
 
