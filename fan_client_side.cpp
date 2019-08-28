@@ -14,7 +14,7 @@ Manual: FAN PERCENTAGE, e.g: FAN 75%
 #include <string.h>
 #include<termios.h>
 #include <unistd.h>
-#include <fcntl.h>t
+#include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
