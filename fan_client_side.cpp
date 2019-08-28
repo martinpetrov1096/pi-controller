@@ -35,7 +35,7 @@ int main () {
         if (getppid() == 1) {   //if parent process exited, kill this child
             exit(0);
         } 
-
+        cout << "working loop";
         if(write (fd, &temp, strlen(temp)) < 0) {
             cout << "fail";
             return -1;
