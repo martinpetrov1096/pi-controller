@@ -32,6 +32,7 @@ int main () {
     
     while(true) {
         if (getppid() == 1) {   //if parent process exited, kill this child
+            cout << "fail";
             exit(0);
         } 
 
@@ -39,9 +40,10 @@ int main () {
         
         //cin >> ledCmd;
 
-        if (write(serial,  &ledCmd, 2) < 0)
+        if (write(serial,  &ledCmd, 2) < 0){
+            cout << "fail2";
             exit(-1);
-
+        }
         
 
       
