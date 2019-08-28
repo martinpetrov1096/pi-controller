@@ -36,13 +36,13 @@ int main () {
         } 
 
 
-        /*
+        
         cin >> ledCmd;
 
-        if (write(serial, ledCmd, len(ledCmd)) < 0)
+        if (write(serial, ledCmd.c_str, ledCmd.length) < 0)
             exit(-1);
 
-        */
+        
 
       
 
