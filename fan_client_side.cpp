@@ -30,14 +30,13 @@ int main () {
         printf("Open failed with exit code: %d", fd);
         return -1;
     }
-       
+    cout << "hello world" << endl;  
     while(true) {
         if (getppid() == 1) {   //if parent process exited, kill this child
-            cout << "failing here" << endl;
+            
             exit(0);
             
-        } 
-        cout << "working loop";
+        }
         if(write (fd, &temp, strlen(temp)) < 0) {
             cout << "fail" << endl;
             return -1;

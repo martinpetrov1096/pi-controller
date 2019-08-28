@@ -22,7 +22,7 @@ using namespace std;
 int main () {
 
     int serial;  
-    const char ledCmd[] = "hi"; 
+    const char ledCmd[] = "50"; 
     
 
     if ((serial = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
