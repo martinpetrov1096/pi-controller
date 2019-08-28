@@ -14,7 +14,7 @@ Manual: FAN PERCENTAGE, e.g: FAN 75%
 #include <string.h>
 #include<termios.h>
 #include <unistd.h>
-#include <fcntl.h>
+#include <fcntl.h>t
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -22,10 +22,10 @@ Manual: FAN PERCENTAGE, e.g: FAN 75%
 using namespace std;
 
 int main () {
-
+    cout << "working here";
     int fd;   
     const char temp[] = "50";
-        cout << "working here";
+       
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", fd);
         return -1;
