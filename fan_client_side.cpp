@@ -25,7 +25,7 @@ int main () {
     cout << "working here";
     int fd;   
     const char temp[] = "50";
-       
+    /*   
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d", fd);
         return -1;
@@ -41,6 +41,6 @@ int main () {
             return -1;
         }
         sleep(2);
-    }
+    }*/
 
 }
