@@ -39,7 +39,7 @@ int main () {
         
         cin >> ledCmd;
 
-        if (write(serial,  &ledCmd, 50) < 0)
+        if (write(serial,  &ledCmd, 2) < 0)
             exit(-1);
 
         
