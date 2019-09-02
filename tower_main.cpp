@@ -81,5 +81,15 @@ int main() {
 
 
 
+/*
+New idea: looks exactly like the standard bash program in the book
 
+3 children:
+FAN - Send percentage of fan
+SYSINFO - Runs in the background, might not even be needed in this program, just seperate program that runs 
+in the background
+LED
+
+
+*/
 
