@@ -1,10 +1,13 @@
-//send FAN TEMP command every 2 seconds
 
-/* Options:
+/* Usage:
 
-Auto: Default - FAN SYSTEM_TEMP , e.g: FAN 42
-Manual: FAN PERCENTAGE, e.g: FAN 75%
+fan
 
+cmd args:
+
+ -a : Auto (Default) - Uses fan speed from tower_sys_info to determine ap
+ -m : Manual, followed by an int specifying the percentage of the fan speed you want
+ -s : return current fan speed
 */
 #include <iostream>
 

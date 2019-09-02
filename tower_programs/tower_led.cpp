@@ -1,5 +1,11 @@
 /*
-client for LED's
+Usage: 
+
+led
+
+cmd args:
+
+    -
 
 
 */
