@@ -1,81 +1,59 @@
-#include <string>
-#include <iostream>
-#include <vector>
+
+/*
+Usage:
+    Can control either the fan or the led's from this program using the command line args
+
+    tower_main -f 55 - Sets the fan's to manual at 55%
+    tower_main -f auto - Sets the fans to auto, and uses the sys_info to get cpu temp
+
+    tower_main -l blue - Sets the LED's to blue
+    tower_main -l white
+
+*/
 
 #include <stdio.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <sys/wait.h>
+
+#include <string>
 
 using namespace std;
 
-class App {
-    public: 
-        pid_t pid;
-        string name;
+int main(int argc, char *argv[]) {
 
-    //TODO: Add pipe here
-};
+    int opt;   
+    while((opt = getopt(argc, argv, "f:l:h")) != -1)  
+    {  
+        switch(opt)  
+        {  
+            case 'f': {
+                printf("Fan Mode: %c\n", opt); 
+                printf("Fan Speed: %s\n", optarg);  
 
-
- 
-int main() {
-
-    //Declare all apps
-    App fan;
-    fan.name = "tower_fan";
-
-
-    
-
-    //Calling all of the programs to run here (Fan/LED)
-    //App childProc[1];
-    vector<App> childProc;
-    childProc.push_back(fan);
-
-
-        
-        
-
-    for (App currProc: childProc) {
-        currProc.pid = fork();
-            if (currProc.pid == 0) {
-                //cout << "Fork worked\n child_pid: " << currProc.pid << endl;
-                write(0, "Fork Worked\n", 15);
-                execl( ("/home/pi/Documents/pi-controller/" + currProc.name).c_str(), 
-                        ("./" + currProc.name).c_str() , (char*) NULL);
-
+                int childPid = fork();
+                if (childPid == 0) {
+                    execl("/home/pi/Documents/pi-controller/tower_programs/tower_fan", "./tower_fan", optarg, (char*) 0);
+                }
             }
-    }
-
-
-
-
-    while(true) {
-       // userInput = getUserInput();
-
-
-       // wait for user input
-
-        /*
-
-        0 - Fan
-        1 - LED
-
-         cin >> UserInput
-         
-         childProc[UserInput].sendCmd(fd);  //MIGHT NOT BE POSSIBLE
-         */
-
-
-    }
-
-
-
-
-    exit(0);
+                break;  
+            case 'l':
+                printf("LED Mode: %c\n", opt); 
+                printf("Color: %s\n", optarg);  
+                break;
+            case 'h':
+                printf("Fan control: -f followed by auto, or value for fan speed percentage\n");
+                printf("LED control: -l followed by desired color(e.g red, green, blue, white)\n");
+                break;
+            case ':':  
+                printf("option needs a value\n");  
+                break;  
+            case '?':  
+                printf("unknown option: %c\n", optopt); 
+                printf("-h for help\n");
+                break;  
+        }  
+    }  
+      
+    return 0;
 }
 
 

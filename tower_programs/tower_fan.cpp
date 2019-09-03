@@ -24,26 +24,21 @@ cmd args:
 
 using namespace std;
 
-int main () {
+int main (int argc, char *argv[]) {
 
     int fd;   
     const char temp[] = "50";
      
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
-        printf("Open failed with exit code: %d", fd);
+        printf("Open failed with exit code: %d\n", fd);
         return -1;
     }
-    while(true) {
-        if (getppid() == 1) {   //if parent process exited, kill this child
-            
-            exit(0);
-            
-        }
-        if(write (fd, &temp, strlen(temp)) < 0) {
+
+    if(write (fd, &temp, strlen(temp)) < 0) {
             cout << "fail" << endl;
             return -1;
-        }
-        sleep(2);
     }
-
+    
+    close(fd);
+    
 }
