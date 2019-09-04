@@ -15,32 +15,51 @@ Notes:
 */
 
 #include <unistd.h>
-#include <stdio.h>
+#include <iostream>
 
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+class Fan {
 
-    int opt;   
-    while((opt = getopt(argc, argv, ":m:")) != -1)  
-    {  
-        switch(opt)  
-        {  
-            case 'm': 
-                printf("Manual Mode: %c\n", opt); 
-                printf("Fan Speed: %s\n", optarg);  
-                //Do manual fan stuff
-                break;  
-            
-            case ':':  
-                printf("option needs a value\n");  
-                break;  
-            case '?':  
-                printf("unknown option: %c\n", optopt); 
-                break;  
-        }  
-    }  
-      
+    public:
+        State *state;
+        Fan() {
+            state = new State();
+        }
+    
+    private:
+
+
+};
+
+class State {
+    virtual void set();
+};
+
+class Auto: public State {
+    public:
+        void set() override {
+            cout <<"Auto State" << endl;
+        }
+
+};
+
+class Manual: public State {
+    public:
+        void set () override {
+            cout <<"Manual State" << endl;
+        }
+};
+
+int main() {
+
+    Fan fan;
+    Auto autoState;
+
+    fan.state = &autoState;
+    fan->state.set();
+
+
     return 0;
 }
