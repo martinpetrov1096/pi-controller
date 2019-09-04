@@ -38,7 +38,7 @@ int main (int argc, char *argv[]) {
     //If 1st arg is a number, write the value, else, fan will be in auto
     if (strtol(argv[1], NULL, 10) != 0) {
 
-        if(write (fd, argv[1], strlen(argv[1])) < 0) {
+        if(write (fd, argv[1] + "\n", strlen(argv[1]) + 1) < 0) {
                 return -1;
         }
 
