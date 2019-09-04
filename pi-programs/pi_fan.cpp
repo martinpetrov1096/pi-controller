@@ -20,6 +20,27 @@ Notes:
 
 using namespace std;
 
+class State {
+    public: 
+        virtual void set() {};
+};
+
+class AutoState: public State {
+    public:
+        void set() override {
+            cout <<"Auto State" << endl;
+        }
+
+};
+
+class ManualState: public State {
+    public:
+        void set () override {
+            cout <<"Manual State" << endl;
+        }
+};
+
+
 class Fan {
 
     public:
@@ -33,33 +54,30 @@ class Fan {
 
 };
 
-class State {
-    virtual void set();
-};
 
-class Auto: public State {
-    public:
-        void set() override {
-            cout <<"Auto State" << endl;
-        }
-
-};
-
-class Manual: public State {
-    public:
-        void set () override {
-            cout <<"Manual State" << endl;
-        }
-};
 
 int main() {
 
     Fan fan;
-    Auto autoState;
+
+
+
+
+
+
+
+
+
+/*
+    Fan fan;
+    AutoState autoState;
 
     fan.state = &autoState;
-    fan->state.set();
+    fan.state->set();
 
-
+    ManualState manual;
+    fan.state = &manual;
+    fan.state->set();
+*/
     return 0;
 }

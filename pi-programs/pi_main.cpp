@@ -13,3 +13,10 @@ Sample serial input:
 
     Read first 3 chars; if fan, redirect to fan, if led, redirect to led. If something else, ignore
 */
+
+
+int main() {
+
+
+    return 0;
+}
