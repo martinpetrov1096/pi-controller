@@ -5,18 +5,13 @@ fan
 
 cmd args:
 
- -a : Auto (Default) - Uses fan speed from tower_sys_info to determine ap
- -m : Manual, followed by an int specifying the percentage of the fan speed you want
+ -auto : Auto (Default) - Uses fan speed from tower_sys_info to determine ap
+ -(int)value : Manual, followed by an int specifying the percentage of the fan speed you want (valid from 0-100)
 
  
  -s : return current fan speed
 */
-#include <iostream>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
 
-#include <stdlib.h>
 
 
 
