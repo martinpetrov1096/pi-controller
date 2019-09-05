@@ -14,9 +14,29 @@ Sample serial input:
     Read first 3 chars; if fan, redirect to fan, if led, redirect to led. If something else, ignore
 */
 
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>  //file open types
 
 int main() {
 
+    //file descriptor to be used for serial port
+    int fd; 
+    char buf;
+    //Open the serial port 
+    if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
+        printf("Open failed with exit code: %d\n", fd);
+        return -1;
+    }
 
+    if (read(fd, &buf, 1) < 0) {
+        printf("Error\n");
+            
+        return -1;
+    }
+
+
+    printf("%s\n", buf);
     return 0;
 }

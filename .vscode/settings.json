@@ -3,6 +3,9 @@
         "string": "cpp"
     },
     "files.exclude": {
-        "**/.out": true
+        "*/.out": true
+    },
+    "search.exclude": {
+        "*/.out": true
     }
 }

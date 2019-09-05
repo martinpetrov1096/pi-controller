@@ -14,16 +14,24 @@ cmd args:
 
 
 
-
+#include <unistd.h>
 #include <fcntl.h>  //file open types
 #include <sys/ioctl.h>
+#include <string.h> //strlen()
+#include <stdio.h>
+#include <stdlib.h> //strtol()
 
 
 using namespace std;
 
 int main (int argc, char *argv[]) {
 
-    int fd; //file descriptor to be used for serial port
+    char arg[strlen(argv[1])];
+    strcpy(arg, argv[1]);
+
+    //file descriptor to be used for serial port
+    int fd; 
+    
     //Open the serial port 
     if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d\n", fd);
@@ -31,9 +39,11 @@ int main (int argc, char *argv[]) {
     }
 
     //If 1st arg is a number, write the value, else, fan will be in auto
-    if (strtol(argv[1], NULL, 10) != 0) {
+    //Add "\n" to be able to parse on the pi's side
+    if (strtol(arg, NULL, 10) != 0) {
 
-        if(write (fd, argv[1] + "\n", strlen(argv[1]) + 1) < 0) {
+        strcat(arg, "\n");
+        if(write (fd, arg, strlen(arg)) < 0) {
                 return -1;
         }
 
