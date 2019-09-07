@@ -95,8 +95,8 @@ class ChildProg{
         }
 
         void update(string command) {
-            write(pipefd[1], command.c_str(), 20);
-            close(pipefd[1]);
+            write(pipefd[1], (command + '\n').c_str(), command.length() + 1);
+            //close(pipefd[1]);
         }
     private:
         int childPid;
@@ -113,19 +113,18 @@ int main() {
     ChildProg fan("pi_fan.out");
     fan.exec();
    
-
     string serialString;
     string* currProgram;
    
-   
     string input;
     while (true) {
-
+        input = "";
+        cin >> input;
         serialString = "FAN 52";    //TODO: grab input from serialReadLine()
         
         if (inputToArgv(serialString)[0] == "FAN") {
-            fan.update("52");
-            fan.update("76");
+            fan.update(input);
+           // fan.update("76");
         }
 
         sleep(2);

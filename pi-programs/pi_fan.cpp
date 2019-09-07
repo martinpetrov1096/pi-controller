@@ -51,7 +51,7 @@ class Fan {
                 if (!pipe.empty()) {
                     currInput = pipe.front();
                     pipe.pop();
-                    //If pipe == -1, set manual to false
+                    //If pipe == 101, set manual to false
                     if (currInput == -1) {
                         manual = false;
                     } else {
@@ -73,7 +73,7 @@ class Fan {
         void autoState() {
             //If the file is open, keep reading until you reach "," 
             int currTemp  = getTemp();
-            //cout << "Current Temp: " << currTemp << endl;
+            cout << "Current Temp: " << currTemp << endl;
             if (currTemp < 50) {
                 //Fan speed
             } else if (currTemp < 70) {
@@ -85,7 +85,7 @@ class Fan {
         }
 
         void manualState(int mSpeed) {
-             //cout << "currInput: " << mSpeed << endl; 
+             cout << "currInput: " << mSpeed << endl; 
 
         }
 
@@ -123,12 +123,13 @@ int main() {
 
     //Need to have fan be a pointer since we are going to be deleting and newing fan->state 
     Fan *fan = new Fan;
-    string fanVal;
+    string input;
+
     thread setThread(&Fan::set, fan);
 
     while (true) {
 
-
+        input = "";
         //if parent process exited, kill this child
         if (getppid() == 1) {
             cout << "Parent Died" << endl;
@@ -136,16 +137,11 @@ int main() {
             exit(0);
         } 
 
-        cin >> fanVal;
-        cout << "fanVal: " << fanVal << endl;
-        //fan->pipe.push(fanVal);
-
-        if(fanVal == "30") 
-            return 0;
+       
+        getline(cin, input, '\n');
+        fan->pipe.push(stoi(input));
 
         sleep(2);
-
-
 
     }
     setThread.join();
