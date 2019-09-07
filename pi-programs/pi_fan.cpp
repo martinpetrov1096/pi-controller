@@ -1,10 +1,13 @@
 /*
-Description: takes optional -m (manual) mode which also requires percentage of fan speed.
-If no arguements are supplied, then fan goes to auto mode.
+Description: pi_fan creates a seperate thread that runs the fan object's state.set().
+             Fan.state changes whether the fan is in auto mode or not. 
+             In the main thread, program waits for user input. If input is -1,
+             fan.state goes to auto mode. If it is a positive value, fan goes to manual
+
 
 
 Notes:
-    Going to use state design method, and have 2  states (auto/manual). 
+    
         auto state:
             -will use tower_cpu_temp info froma file created by pi_sys_reader
             -defaults to 100% if cannot read the file
@@ -12,72 +15,118 @@ Notes:
         manaul state:
             - sets fan to whatever temp is requested
             - if cpu temp is over 70c, defaults to auto
+
 */
+
+
+
+#include <fstream>
+#include <sstream>
+#include <iostream> //for getLine
+#include <thread>
+#include <queue>
 
 #include <unistd.h>
 #include <iostream>
+#include <fcntl.h>  //file open types
+#include <stdio.h>
 
 
 using namespace std;
 
-class State {
-    public: 
-        virtual void set() {};
-};
-
-class AutoState: public State {
-    public:
-        void set() override {
-            cout <<"Auto State" << endl;
-        }
-
-};
-
-class ManualState: public State {
-    public:
-        void set () override {
-            cout <<"Manual State" << endl;
-        }
-};
-
-
 class Fan {
-
     public:
-        State *state;
+        //pipe is used like go channels. Stores the manual speed wanted for the fan. 
+        queue <int> pipe;
+
         Fan() {
-            state = new State();
+            fin.open(fileName);
         }
-    
+        ~Fan() {
+            fin.close();
+        }
+        void set() {
+
+            while (true) {
+                if (!pipe.empty()) {
+                    currInput = pipe.front();
+                    pipe.pop();
+                    //If pipe == -1, set manual to false
+                    if (currInput == -1) {
+                        manual = false;
+                    } else {
+                        manual = true;
+                    }
+                }
+
+                if (manual) {
+                    manualState(currInput);
+                } else
+                {
+                    autoState();
+                }
+                //Sleep for 2 seconds after each iteration
+                sleep(2); 
+            }
+        }
+
+        void autoState() {
+            //If the file is open, keep reading until you reach "," 
+            getTemp();
+            
+        }
+
+        void manualState(int mSpeed) {
+             cout << "currInput: " << mSpeed << endl; 
+
+             
+
+
+        }
+
+        int getTemp() {
+            string currInput;
+            if(fin.is_open()) {
+                fin.seekg(-1,ios_base::end);                // go to one spot before the EOF
+                char ch;
+
+                //Need do while loop to ignore ',' at end of file
+                do {
+                    fin.seekg(-2, ios_base::cur);  
+                    fin.get(ch); 
+
+                    //If have reached the beginning of file, break
+                    if ((int) fin.tellg() < 1) {
+                        fin.seekg(0);
+                        break;
+                    }
+                } while (ch != ',');
+                getline(fin, currInput, ',');
+            }
+            return stoi(currInput);
+        }
     private:
-
-
+        bool manual;
+        int currInput;
+        FILE *sysTempFd;
+        string fileName = "tower_temp.csv";
+        ifstream fin;
 };
-
 
 
 int main() {
 
-    Fan fan;
+    //Need to have fan be a pointer since we are going to be deleting and newing fan->state 
+    Fan *fan = new Fan;
+    int fanVal;
+    thread setThread(&Fan::set, fan);
 
-
-
-
-
-
-
-
-
-/*
-    Fan fan;
-    AutoState autoState;
-
-    fan.state = &autoState;
-    fan.state->set();
-
-    ManualState manual;
-    fan.state = &manual;
-    fan.state->set();
-*/
+    while (true) {
+        cin >> fanVal;
+        cout << "fanVal: " << fanVal << endl;
+        fan->pipe.push(fanVal);
+        sleep(1);
+    }
+    setThread.join();
     return 0;
 }
