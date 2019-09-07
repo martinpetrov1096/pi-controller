@@ -72,24 +72,51 @@ string* inputToArgv(string input) {
     return args;
 }
 
+
+class ChildProg{
+
+    public:
+
+
+        ChildProg(string n) {
+            name = n;
+        }
+
+        void exec() {
+            pipe(pipefd);
+            childPid = fork();
+            if (childPid == 0) {
+                close(pipefd[1]);   //Close output part of pipe
+                dup2(pipefd[0], STDIN_FILENO); //set pipefd[0] to cin for child
+                close(pipefd[0]);
+                execl(name.c_str(), ("./" + name).c_str(), (char*) 0);
+            }
+
+        }
+
+        void update(string command) {
+            write(pipefd[1], command.c_str(), 20);
+            close(pipefd[1]);
+        }
+    private:
+        int childPid;
+        string name;
+        int pipefd[2];
+
+
+};
+
+
 int main() {
 
     //Call all pi child programs
-    int pipeFan[2];
-    pipe(pipeFan);
+    ChildProg fan("pi_fan.out");
+    fan.exec();
+   
 
-    int childPid = fork();
-    if(childPid == 0) {
-        cout << "Fan Called" << endl;
-        close(pipeFan[1]);
-        dup2(pipeFan[0], STDIN_FILENO);
-        close(pipeFan[0]);
-        execl("pi_fan.out", "./pi_fan.out", (char *) 0);
-    }
-
-    close(pipeFan[0]);
     string serialString;
     string* currProgram;
+   
    
     string input;
     while (true) {
@@ -97,9 +124,8 @@ int main() {
         serialString = "FAN 52";    //TODO: grab input from serialReadLine()
         
         if (inputToArgv(serialString)[0] == "FAN") {
-            //send currProg[1] to cin of pi_fan child process
-            write(pipeFan[1], inputToArgv(serialString)[1].c_str(), 20);
-            close(pipeFan[1]);
+            fan.update("52");
+            fan.update("76");
         }
 
         sleep(2);

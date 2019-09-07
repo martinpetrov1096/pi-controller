@@ -9,7 +9,9 @@
         "queue": "cpp",
         "string_view": "cpp",
         "vector": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "thread": "cpp",
+        "stdexcept": "cpp"
     },
     "files.exclude": {
         "*.out": true

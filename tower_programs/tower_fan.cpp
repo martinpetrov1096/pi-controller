@@ -38,7 +38,12 @@ int main (int argc, char *argv[]) {
         return -1;
     }
 
-    //If 1st arg is a number, write the value, else, fan will be in auto
+    //Write "Fan" to serial so pi_main knows what program to call
+    if(write(fd, "FAN", 7) < 0) {
+        return -1;
+    }
+
+    //If 2nd arg is a number, write the value, else, fan will be in auto
     //Add "\n" to be able to parse on the pi's side
     if (strtol(arg, NULL, 10) != 0) {
 
@@ -49,7 +54,7 @@ int main (int argc, char *argv[]) {
 
     } else {
 
-        if(write (fd, "auto", 4) < 0) {
+        if(write (fd, "-1\n", 2) < 0) {
                 return -1;
         }
 

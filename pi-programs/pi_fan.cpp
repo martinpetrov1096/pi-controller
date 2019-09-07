@@ -72,22 +72,27 @@ class Fan {
 
         void autoState() {
             //If the file is open, keep reading until you reach "," 
-            getTemp();
+            int currTemp  = getTemp();
+            //cout << "Current Temp: " << currTemp << endl;
+            if (currTemp < 50) {
+                //Fan speed
+            } else if (currTemp < 70) {
+                //Fan Speed
+            } else {
+                //Fan speed = 100
+            }
             
         }
 
         void manualState(int mSpeed) {
-             cout << "currInput: " << mSpeed << endl; 
-
-             
-
+             //cout << "currInput: " << mSpeed << endl; 
 
         }
 
         int getTemp() {
             string currInput;
             if(fin.is_open()) {
-                fin.seekg(-1,ios_base::end);                // go to one spot before the EOF
+                fin.seekg(-1,ios_base::end);                // go to one char before the EOF
                 char ch;
 
                 //Need do while loop to ignore ',' at end of file
@@ -118,14 +123,30 @@ int main() {
 
     //Need to have fan be a pointer since we are going to be deleting and newing fan->state 
     Fan *fan = new Fan;
-    int fanVal;
+    string fanVal;
     thread setThread(&Fan::set, fan);
 
     while (true) {
+
+
+        //if parent process exited, kill this child
+        if (getppid() == 1) {
+            cout << "Parent Died" << endl;
+            //setThread.join();
+            exit(0);
+        } 
+
         cin >> fanVal;
         cout << "fanVal: " << fanVal << endl;
-        fan->pipe.push(fanVal);
-        sleep(1);
+        //fan->pipe.push(fanVal);
+
+        if(fanVal == "30") 
+            return 0;
+
+        sleep(2);
+
+
+
     }
     setThread.join();
     return 0;
