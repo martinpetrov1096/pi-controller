@@ -41,6 +41,7 @@ class Fan {
 
         Fan() {
             fin.open(fileName);
+            //pinMode(3, OUTPUT);
         }
         ~Fan() {
             fin.close();
@@ -75,17 +76,27 @@ class Fan {
             int currTemp  = getTemp();
             cout << "Current Temp: " << currTemp << endl;
             if (currTemp < 50) {
-                //Fan speed
-            } else if (currTemp < 70) {
-                //Fan Speed
+                //pwmWrite(3,0);    //If cpu temp is < 50, then set fan to 0
             } else {
-                //Fan speed = 100
+                /*
+                    50c = 30%
+                    60 = 40%
+                    70 = 70%
+                    80 = 100%
+                */
+                
+
+
             }
             
         }
 
         void manualState(int mSpeed) {
              cout << "currInput: " << mSpeed << endl; 
+             //pwmWrite(3, mSpeed * 10);    //Technially max is 1024, not 1000, but close enough
+             if (getTemp() > 70){
+                 //pwmWrite(3, 1024);
+             }
 
         }
 

@@ -76,8 +76,6 @@ string* inputToArgv(string input) {
 class ChildProg{
 
     public:
-
-
         ChildProg(string n) {
             name = n;
         }
@@ -102,8 +100,6 @@ class ChildProg{
         int childPid;
         string name;
         int pipefd[2];
-
-
 };
 
 
@@ -111,8 +107,11 @@ int main() {
 
     //Call all pi child programs
     ChildProg fan("pi_fan.out");
+    ChildProg sys("pi_sys_reader.out");
+
     fan.exec();
-   
+    sys.exec();
+
     string serialString;
     string* currProgram;
    
@@ -125,6 +124,10 @@ int main() {
         if (inputToArgv(serialString)[0] == "FAN") {
             fan.update(input);
            // fan.update("76");
+        }
+
+        if (inputToArgv(serialString)[0] == "TEM") {
+            
         }
 
         sleep(2);
