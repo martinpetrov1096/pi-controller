@@ -6,9 +6,9 @@ fan
 cmd args:
 
  -auto : Auto (Default) - Uses fan speed from tower_sys_info to determine ap
- -(int)value : Manual, followed by an int specifying the percentage of the fan speed you want (valid from 0-100)
+ -value(int) : Manual, followed by an int specifying the percentage of the fan speed you want (valid from 0-100)
 
- 
+ TODO: 
  -s : return current fan speed
 */
 
@@ -39,11 +39,11 @@ int main (int argc, char *argv[]) {
     }
 
     //Write "Fan" to serial so pi_main knows what program to call
-    if(write(fd, "FAN", 7) < 0) {
+    if(write(fd, "FAN ", 4) < 0) {
         return -1;
     }
 
-    //If 2nd arg is a number, write the value, else, fan will be in auto
+    //If 2nd arg is a number, write the value, else, fan write -1 to let the fan know to be in auto
     //Add "\n" to be able to parse on the pi's side
     if (strtol(arg, NULL, 10) != 0) {
 

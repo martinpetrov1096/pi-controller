@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
                 printf("Calling fan with options: %s\n", optarg);  
                 int childPid = fork();
                 if (childPid == 0) {
-                    execl("/home/pi/Documents/pi-controller/tower_programs/tower_fan.out", "./tower_fan.out", optarg, (char*) 0);
+                    execl("tower_fan.out", "./tower_fan.out", optarg, (char*) 0);
                 } else {
                     wait(&childPid);
                     return 0;

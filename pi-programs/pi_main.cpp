@@ -8,8 +8,8 @@ Sample serial input:
     fan auto    - redirects to fan, where it will operate in auto mode, and use the 
                 sysinfo information
 
-    led blue
-    led white
+    led red green blue brightness
+    led 0 0 100 100
  
 
  Implementation:
@@ -107,27 +107,29 @@ int main() {
 
     //Call all pi child programs
     ChildProg fan("pi_fan.out");
+    ChildProg led("pi_led.out");
     ChildProg sys("pi_sys_reader.out");
 
-    fan.exec();
-    sys.exec();
+    //fan.exec();
+    led.exec();
+    //sys.exec();
 
     string serialString;
     string* currProgram;
    
     string input;
     while (true) {
-        input = "";
+       
         cin >> input;
-        serialString = "FAN 52";    //TODO: grab input from serialReadLine()
+        serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
         if (inputToArgv(serialString)[0] == "FAN") {
             fan.update(input);
            // fan.update("76");
         }
 
-        if (inputToArgv(serialString)[0] == "TEM") {
-            
+        if (inputToArgv(serialString)[0] == "LED") {
+            led.update(input);
         }
 
         sleep(2);

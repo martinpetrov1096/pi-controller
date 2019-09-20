@@ -1,21 +1,31 @@
 /*
-Description: pi_fan creates a seperate thread that runs the fan object's state.set().
-             Fan.state changes whether the fan is in auto mode or not. 
-             In the main thread, program waits for user input. If input is -1,
-             fan.state goes to auto mode. If it is a positive value, fan goes to manual
+Description: 
+        pi_fan creates a seperate thread that runs the fan.setState, which will initially call fan.stateAuto(). 
+        It then waits for input from the standard input. 
+        
+        Valid input: integer with range [-1, 100]. Invalid input will be ignored
+        
+        if input == -1, fan.stateAuto() will be called
 
+        if input > 0 && input <= 100, fan.stateManual() will be called
 
+        if input == -2, thread running fan.setState() will exit
+           
+            stateAuto():
+                -will use tower_cpu_temp info froma file created by pi_sys_reader
+                -defaults to 100% if cannot read the file
 
-Notes:
-    
-        auto state:
-            -will use tower_cpu_temp info froma file created by pi_sys_reader
-            -defaults to 100% if cannot read the file
+            stateManual():
+                - sets fan to whatever convertedInput is requested
+                - if cpu temp is over 70c, defaults to auto
 
-        manaul state:
-            - sets fan to whatever temp is requested
-            - if cpu temp is over 70c, defaults to auto
+*/
 
+/*
+TODO:
+    1. When pi_fan process dies, send kill signal to the child via the inputPipe to end the thread - done (I think)
+    2. Reset tower_temp.csv every hour, and allow this program to run with empty file
+    3. Fix setFan() to write to pi gpio
 */
 
 
@@ -34,74 +44,17 @@ Notes:
 
 using namespace std;
 
-class Fan {
+/*
+TempMonitor class deals with retrieving the temperature from tower_temp.csv
+*/
+class TempMonitor {
     public:
-        //pipe is used like go channels. Stores the manual speed wanted for the fan. 
-        queue <int> pipe;
-
-        Fan() {
-            fin.open(fileName);
-            //pinMode(3, OUTPUT);
-        }
-        ~Fan() {
-            fin.close();
-        }
-        void set() {
-
-            while (true) {
-                if (!pipe.empty()) {
-                    currInput = pipe.front();
-                    pipe.pop();
-                    //If pipe == 101, set manual to false
-                    if (currInput == -1) {
-                        manual = false;
-                    } else {
-                        manual = true;
-                    }
-                }
-
-                if (manual) {
-                    manualState(currInput);
-                } else
-                {
-                    autoState();
-                }
-                //Sleep for 2 seconds after each iteration
-                sleep(2); 
-            }
-        }
-
-        void autoState() {
-            //If the file is open, keep reading until you reach "," 
-            int currTemp  = getTemp();
-            cout << "Current Temp: " << currTemp << endl;
-            if (currTemp < 50) {
-                //pwmWrite(3,0);    //If cpu temp is < 50, then set fan to 0
-            } else {
-                /*
-                    50c = 30%
-                    60 = 40%
-                    70 = 70%
-                    80 = 100%
-                */
-                
-
-
-            }
-            
-        }
-
-        void manualState(int mSpeed) {
-             cout << "currInput: " << mSpeed << endl; 
-             //pwmWrite(3, mSpeed * 10);    //Technially max is 1024, not 1000, but close enough
-             if (getTemp() > 70){
-                 //pwmWrite(3, 1024);
-             }
-
-        }
-
+        //Grab the current CPU temp from the tower_temp.csv
         int getTemp() {
+        
             string currInput;
+            fin.open(tempFileName);
+             //If the file is open, keep reading until you reach "," 
             if(fin.is_open()) {
                 fin.seekg(-1,ios_base::end);                // go to one char before the EOF
                 char ch;
@@ -119,41 +72,139 @@ class Fan {
                 } while (ch != ',');
                 getline(fin, currInput, ',');
             }
-            return stoi(currInput);
+            fin.close();
+
+            try {
+                return stoi(currInput);
+            }
+            catch(invalid_argument) {
+                return 100;
+            }
         }
+
+    private:
+        FILE *sysTempFd;
+        string tempFileName = "tower_temp.csv";
+        ifstream fin;
+
+};
+
+
+class Fan {
+    public:
+        //Grabs the current input from the pipe, stores it in currInput, and sets manual to true or false 
+        void getCurrInput() {
+            if (!inputPipe.empty()) {
+                    currInput = inputPipe.front();
+                    inputPipe.pop();
+                    //If inputPipe == -1, setState manual to false
+                    if (currInput == -1) {
+                        manual = false;
+                    } else {
+                        manual = true;
+                    }
+            }
+            return;
+        }
+
+        int getFanSpeed() {
+            return 30; //TODO: remove later
+            //return pwmRead(3)
+        }
+        //check if input is valid, and push to inputPipe if it is, else ignore
+        void pushInput(string input) {
+            int convertedInput;
+            //see if input if a valid number
+            try {
+                convertedInput = stoi(input);
+            }
+            catch(invalid_argument) {
+                return;
+            }
+            if (!(convertedInput > 100 || convertedInput < -1)) {
+                inputPipe.push(convertedInput);
+            } 
+            if (convertedInput == -2) {
+                exit(0);
+            }
+            return;
+        }
+
+        void setFanSpeed(int val) {
+            //pwmWrite(3, val); //Technially max is 1024, not 1000, but close enough
+            cout << "Writing to PWM: " << val * 10 << endl;
+        }
+
+        void setState() {
+            while (true) {
+                getCurrInput();
+                if (manual) {
+                    stateManual(currInput);
+                } else {
+                    stateAuto();
+                }
+                //Sleep for 2 seconds after each iteration
+                sleep(2); 
+            }
+        }
+
+        void stateAuto() {
+            cout << "AutoState" << endl;
+            int currTemp  = tempMonitor.getTemp();
+            cout << "Current Temp: " << currTemp << endl;
+            if (currTemp < 50) {
+                setFanSpeed(0);
+            } else if (currTemp < 70){
+                /*
+                    50c = 40%
+                    60c = 70%
+                    70c = 100%
+                    y = 3x - 110
+                */
+
+                setFanSpeed(3 * currTemp - 110);
+            } else {
+
+                setFanSpeed(100);
+            }        
+        }
+
+        void stateManual(int mSpeed) {
+             cout << "Manual State" <<  endl; 
+             setFanSpeed(mSpeed);
+             if (tempMonitor.getTemp() > 70){
+                stateAuto();
+             }
+        }
+
     private:
         bool manual;
         int currInput;
-        FILE *sysTempFd;
-        string fileName = "tower_temp.csv";
-        ifstream fin;
+        queue <int> inputPipe;  //inputPipe is used like go channels. Stores the input 
+        TempMonitor tempMonitor;
 };
 
 
 int main() {
 
-    //Need to have fan be a pointer since we are going to be deleting and newing fan->state 
-    Fan *fan = new Fan;
+    Fan fan;
     string input;
 
-    thread setThread(&Fan::set, fan);
+    thread setThread(&Fan::setState, &fan);
 
     while (true) {
 
-        input = "";
-        //if parent process exited, kill this child
+        //if parent process exited, kill this child by sending -2 to the pipe
         if (getppid() == 1) {
             cout << "Parent Died" << endl;
-            //setThread.join();
+            fan.pushInput("-2");
+            setThread.join();
             exit(0);
         } 
 
-       
+        //Get the last line from the the standard input, and store it in input.
         getline(cin, input, '\n');
-        fan->pipe.push(stoi(input));
-
-        sleep(2);
-
+        fan.pushInput(input);
     }
     setThread.join();
     return 0;

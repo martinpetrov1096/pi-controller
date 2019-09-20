@@ -1,10 +1,13 @@
-all: pi_main pi_fan
+all: pi_main pi_fan pi_led
 
 clean: 
 	rm *.out
 
 pi_fan:
 	g++ -std=c++11 -o pi_fan.out pi_fan.cpp
+
+pi_led:
+	g++ -std=c++11 -o pi_led.out pi_led.cpp
 
 pi_main:
 	g++ -std=c++11 -o pi_main.out pi_main.cpp
