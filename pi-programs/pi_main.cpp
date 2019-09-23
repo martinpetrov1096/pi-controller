@@ -119,9 +119,11 @@ int main() {
    
     string input;
     while (true) {
-       
-        cin >> input;
-        serialString = "LED 52";    //TODO: grab input from serialReadLine()
+        
+
+        serialString = serialReadLine();
+        //cin >> input;
+        //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
         if (inputToArgv(serialString)[0] == "FAN") {
             fan.update(input);
