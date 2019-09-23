@@ -28,7 +28,7 @@ int main (int argc, char *argv[]) {
 
     char arg[strlen(argv[1])];
     strcpy(arg, argv[1]);
-
+    printf("Workin2g\n");
     //file descriptor to be used for serial port
     int fd; 
     
