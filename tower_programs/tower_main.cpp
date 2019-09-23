@@ -40,9 +40,10 @@ int main(int argc, char *argv[]) {
                 break;  
             case 'l': {
 
-                printf("Calling fan with options: %s\n", optarg);  
+                printf("Calling led with options: %s\n", optarg);  
                 int childPid = fork();
                 if (childPid == 0) {
+                    printf("working\n");
                     execl("tower_led.out", "./tower_led.out", optarg, (char*) 0);
                 } else {
                     wait(&childPid);
