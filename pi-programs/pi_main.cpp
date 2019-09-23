@@ -121,7 +121,8 @@ int main() {
     while (true) {
         
 
-        serialString = serialReadLine();
+        input = serialReadLine();
+        cout << input << endl;
         //cin >> input;
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
