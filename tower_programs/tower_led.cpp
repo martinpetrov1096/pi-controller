@@ -33,7 +33,7 @@ int main (int argc, char *argv[]) {
     int fd; 
     
     //Open the serial port 
-    if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
+    if ((fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d\n", fd);
         return -1;
     }
