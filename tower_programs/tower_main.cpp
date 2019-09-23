@@ -39,8 +39,16 @@ int main(int argc, char *argv[]) {
             }
                 break;  
             case 'l':
-                printf("LED Mode: %c\n", opt); 
-                printf("Color: %s\n", optarg);  
+
+                printf("Calling fan with options: %s\n", optarg);  
+                int childPid = fork();
+                if (childPid == 0) {
+                    execl("tower_led.out", "./tower_led.out", optarg, (char*) 0);
+                } else {
+                    wait(&childPid);
+                    return 0;
+                }
+ 
                 break;
             case 'h':
                 printf("Fan control: -f followed by auto, or value for fan speed percentage\n");
