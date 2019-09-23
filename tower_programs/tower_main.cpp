@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
                 }
             }
                 break;  
-            case 'l':
+            case 'l': {
 
                 printf("Calling fan with options: %s\n", optarg);  
                 int childPid = fork();
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
                     wait(&childPid);
                     return 0;
                 }
- 
+            }
                 break;
             case 'h':
                 printf("Fan control: -f followed by auto, or value for fan speed percentage\n");
