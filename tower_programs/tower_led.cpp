@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
     }
 
     //Write "Fan" to serial so pi_main knows what program to call
-    if(write(fd, "LED 100 100 100 100\n", 20) < 0) {
+    if(write(fd, "LED-100-100-100-100\n", 20) < 0) {
         return -1;
     }
 /*
