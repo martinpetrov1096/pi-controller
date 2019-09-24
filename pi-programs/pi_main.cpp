@@ -5,7 +5,7 @@ Description:
 
 Sample serial input:
     fan 75 - redirects to fan, where it will change fans to be at 75%
-    fan auto    - redirects to fan, where it will operate in auto mode, and use the 
+    fan -1    - redirects to fan, where it will operate in auto mode, and use the 
                 sysinfo information
 
     led red green blue brightness
@@ -20,8 +20,10 @@ Sample serial input:
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/ioctl.h>
 #include <fcntl.h>  //file open types
-
+#include <wiringPi.h>
+#include <wiringSerial.h>
 #include <string>
 #include <iostream>
 
@@ -57,12 +59,12 @@ string serialReadLine() {
     }
     
     while(currChar != '\n') {
+        ++count;
         read(fd, &currChar, 1);
         if (currChar == '\n') {
             break;
         }
         input += currChar;
-
     }
     */
 
@@ -72,10 +74,11 @@ string serialReadLine() {
 Args[0] is the program name
 Args[1] is the rest of the string
 */
-string* inputToArgv(string input) {
-    string* args;
-    args = new string[2];
-
+void inputToArgv(string input, string* args) {
+    //string* args;
+    //args = new string[2];
+    args[0] = "";
+    args[1] = "";
     //Getting the program name
     int i = 0;
     while(input[i] != ' ') {
@@ -88,7 +91,7 @@ string* inputToArgv(string input) {
     for (;i < input.length(); ++i) {
         args[1] += input[i];
     }
-    return args;
+    
 }
 
 
@@ -123,6 +126,7 @@ class ChildProg{
 
 
 int main() {
+    //int serialFd = serialOpen();
 
     //Call all pi child programs
     ChildProg fan("pi_fan.out");
@@ -159,9 +163,13 @@ int main() {
         if (inputToArgv(input)[0] == "LED") {
             led.update(input);
         }
+        
+        
 
-        sleep(2);
+        
+
+        //sleep(2);
     }
-
+    */
     return 0;
 }
