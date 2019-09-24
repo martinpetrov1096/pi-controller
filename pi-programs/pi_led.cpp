@@ -8,22 +8,12 @@ Description:
            
 
 */
-
-/*
-TODO:
-    1. Fix setLed() to output to pi gpio
-*/
-
-
-
-
 #include <sstream>
 #include <iostream> //for getLine
 
-
 #include <unistd.h>
-
-
+#include <wiringPi.h>
+#include <softPwm.h>
 
 
 using namespace std;
@@ -35,6 +25,13 @@ class Color {
 
 class Led {
     public:
+
+        Led() {
+            wiringPiSetup();
+            softPwmCreate(0, 0, 100);
+            softPwmCreate(1, 0, 100);
+            softPwmCreate(2, 0, 100);
+        }
         
         //Format the input into color.rgba
         void formatInput(string input) {
@@ -89,14 +86,9 @@ class Led {
         }
 
         void setLed() {
-
-           
-
-            //pwmWrite(0, color.rgb[0]); 
-            //pwmWrite(1, color.rgb[1]);
-            //pwmWrite(2, color.rgb[2]);
-            //pwmWrite(3, color.rgb[3]);
-            cout << "writing to pwm" << endl;
+            softPwmWrite(0, color.rgba[0]);
+            softPwmWrite(1, color.rgba[1]);
+            softPwmWrite(2, color.rgba[2]);
         }
 
       
@@ -122,9 +114,8 @@ int main() {
         //Get the last line from the the standard input, and store it in input.
         getline(cin, input, '\n');
         led.formatInput(input);
-        //led.setLed();
+        led.setLed();
         led.getLed();
-        
     }
 
     return 0;
