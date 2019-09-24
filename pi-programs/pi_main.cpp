@@ -44,6 +44,7 @@ string serialReadLine() {
     do {
         currChar = serialGetchar(fd);
         input += currChar;
+       
 
     } while(currChar != '\n');
     return input;
@@ -140,8 +141,8 @@ int main() {
     char test;
     while (true) {
         
-        test = serialReadLine();
-        cout << test << endl;
+        input = serialReadLine();
+        cout << input << endl;
         
 
 
@@ -150,14 +151,14 @@ int main() {
         //cin >> input;
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
-        /*if (inputToArgv(serialString)[0] == "FAN") {
+        if (inputToArgv(input)[0] == "FAN") {
             fan.update(input);
            // fan.update("76");
         }
 
-        if (inputToArgv(serialString)[0] == "LED") {
+        if (inputToArgv(input)[0] == "LED") {
             led.update(input);
-        }*/
+        }
 
         sleep(2);
     }
