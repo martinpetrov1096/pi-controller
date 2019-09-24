@@ -47,19 +47,19 @@ int main (int argc, char *argv[]) {
     printf("%s\n", arg);
     if (strcmp(arg, "blue") == 0) {
         printf("blue called\n");
-        if(write (fd, "0 0 100 100\n", 12) < 0) {
+        if(write (fd, "0 0 100 100\n", 13) < 0) {
                 return -1;
         }
     } else if (strcmp(arg, "red") == 0) {
-        if(write (fd, "100 0 0 100\n", 12) < 0) {
+        if(write (fd, "100 0 0 100\n", 13) < 0) {
                 return -1;
         }
     } else if (strcmp(arg, "green") == 0) {
-        if(write (fd, "0 100 0 100\n", 12) < 0) {
+        if(write (fd, "0 100 0 100\n", 13) < 0) {
                 return -1;
         }
     } else if (strcmp(arg, "white") == 0) {
-        if(write (fd, "100 100 100 100\n", 14) < 0) {
+        if(write (fd, "100 100 100 100\n", 15) < 0) {
                 return -1;
         }
     }
