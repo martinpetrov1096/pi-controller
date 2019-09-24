@@ -25,6 +25,8 @@ Sample serial input:
 #include <string>
 #include <iostream>
 
+#include <wiringSerial.h>
+
 using namespace std;
 
 //Read from serial until '\n' is reached
@@ -35,7 +37,20 @@ string serialReadLine() {
     string input;
     char currChar = 0;
 
-    if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
+    fd = serialOpen("/dev/ttyAMA0", 115200);
+
+
+
+    do {
+        currChar = serialGetchar(fd);
+        input += currChar;
+
+    } while(currChar != '\n');
+    return input;
+
+
+
+    /*if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
         printf("Open failed with exit code: %d\n", fd);
         return "-1";
     }
@@ -48,8 +63,8 @@ string serialReadLine() {
         input += currChar;
 
     }
+    */
 
-    return input;
 }
 
 /*
@@ -121,11 +136,17 @@ int main() {
     string* currProgram;
    
     string input;
+    int fd = 0;
+    char test;
     while (true) {
         
+        test = serialReadLine();
+        cout << test << endl;
+        
 
-        input = serialReadLine();
-        cout << input << endl;
+
+  //      input = serialReadLine();
+//        cout << input << endl;
         //cin >> input;
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
