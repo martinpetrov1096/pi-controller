@@ -58,7 +58,7 @@ int main (int argc, char *argv[]) {
                 return -1;
         }
     } else if (arg == "white") {
-        if(write (fd, "100 100 100 100\n", 12) < 0) {
+        if(write (fd, "100 100 100 100\n", 14) < 0) {
                 return -1;
         }
     }
