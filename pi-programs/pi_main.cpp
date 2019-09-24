@@ -42,6 +42,9 @@ string serialReadLine() {
     
     while(currChar != '\n') {
         read(fd, &currChar, 1);
+        if (currChar == '\n') {
+            break;
+        }
         input += currChar;
 
     }
