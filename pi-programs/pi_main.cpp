@@ -26,6 +26,7 @@ Sample serial input:
 #include <wiringSerial.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include <wiringSerial.h>
 
@@ -37,36 +38,14 @@ string serialReadLine() {
     //fd is the file descriptor for serial
     int fd;
     string input;
-    char currChar = 0;
+    char currChar;
 
     fd = serialOpen("/dev/ttyAMA0", 115200);
-
-
-
     do {
         currChar = serialGetchar(fd);
         input += currChar;
-       
-
     } while(currChar != '\n');
     return input;
-
-
-
-    /*if ((fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) < 0) {
-        printf("Open failed with exit code: %d\n", fd);
-        return "-1";
-    }
-    
-    while(currChar != '\n') {
-        ++count;
-        read(fd, &currChar, 1);
-        if (currChar == '\n') {
-            break;
-        }
-        input += currChar;
-    }
-    */
 
 }
 
@@ -74,24 +53,20 @@ string serialReadLine() {
 Args[0] is the program name
 Args[1] is the rest of the string
 */
-void inputToArgv(string input, string* args) {
-    //string* args;
-    //args = new string[2];
-    args[0] = "";
-    args[1] = "";
-    //Getting the program name
+vector<string> inputToArgv(string input) {
+
+    vector <string> args(2);
+
     int i = 0;
     while(input[i] != ' ') {
         args[0] += input[i];
         ++i;
-    }
-    ++i; //Skip the space
-
-    //Get the program parameters from the rest of the input
-    for (;i < input.length(); ++i) {
+    } 
+    ++i; //for the ' ' (space)
+    for (; i < input.length(); ++i) {
         args[1] += input[i];
     }
-    
+    return args;
 }
 
 
@@ -140,36 +115,28 @@ int main() {
     string serialString;
     string* currProgram;
    
-    string input;
+    vector <string> input(2);
     int fd = 0;
     char test;
     while (true) {
         
-        input = serialReadLine();
-        cout << input << endl;
+        serialString = serialReadLine();
         
-
-
-  //      input = serialReadLine();
-//        cout << input << endl;
-        //cin >> input;
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
-        
-        if (inputToArgv(input)[0] == "FAN") {
-            fan.update(input);
-           // fan.update("76");
+        input = inputToArgv(serialString);
+        cout << input[0] << endl;
+        cout << input[1] << endl;
+
+        if (input[0] == "LED") {
+            cout << "calling led" << endl;
+            led.update(input[1]);
+        }
+        if (input[0] == "FAN") {
+            fan.update(input[1]);
         }
 
-        if (inputToArgv(input)[0] == "LED") {
-            led.update(input);
-        }
-        
-        
-
-        
-
-        //sleep(2);
+        sleep(2);
     }
-    */
+    
     return 0;
 }
