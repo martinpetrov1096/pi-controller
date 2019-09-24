@@ -45,6 +45,7 @@ int main (int argc, char *argv[]) {
 
     //If 2nd arg is a number, write the value, else, fan write -1 to let the fan know to be in auto
     //Add "\n" to be able to parse on the pi's side
+    printf("%s\n", arg);
     if (arg == "blue") {
         printf("blue called\n");
         if(write (fd, "0 0 100 100\n", 12) < 0) {
@@ -67,7 +68,7 @@ int main (int argc, char *argv[]) {
     
     
     
-    
+    /*
     if (strtol(arg, NULL, 10) != 0) {
 
         strcat(arg, "\n");
@@ -81,7 +82,7 @@ int main (int argc, char *argv[]) {
                 return -1;
         }
 
-    }
+    }*/
         
     close(fd);
 
