@@ -126,14 +126,14 @@ int main() {
         //cin >> input;
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         
-        if (inputToArgv(serialString)[0] == "FAN") {
+        /*if (inputToArgv(serialString)[0] == "FAN") {
             fan.update(input);
            // fan.update("76");
         }
 
         if (inputToArgv(serialString)[0] == "LED") {
             led.update(input);
-        }
+        }*/
 
         sleep(2);
     }
