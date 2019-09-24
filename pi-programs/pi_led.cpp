@@ -112,10 +112,13 @@ int main() {
         } 
 
         //Get the last line from the the standard input, and store it in input.
-        getline(cin, input, '\n');
+        getline(cin, input);
+        cout << input << endl;
+        cout << "num chars: " << input.length() << endl;
         led.formatInput(input);
         led.setLed();
         led.getLed();
+        sleep(2);
     }
 
     return 0;
