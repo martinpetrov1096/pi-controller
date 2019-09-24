@@ -45,6 +45,7 @@ string serialReadLine() {
         currChar = serialGetchar(fd);
         input += currChar;
     } while(currChar != '\n');
+    serialFlush(fd);
     return input;
 
 }

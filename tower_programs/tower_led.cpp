@@ -59,7 +59,7 @@ int main (int argc, char *argv[]) {
                 return -1;
         }
     } else if (strcmp(arg, "white") == 0) {
-        if(write (fd, "100 100 100 100\n", 15) < 0) {
+        if(write (fd, "100 100 100 100\n", 17) < 0) {
                 return -1;
         }
     }
