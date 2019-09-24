@@ -124,8 +124,8 @@ int main() {
         
         //serialString = "LED 52";    //TODO: grab input from serialReadLine()
         input = inputToArgv(serialString);
-        cout << input[0] << endl;
-        cout << input[1] << endl;
+        //cout << input[0] << endl;
+        //cout << input[1] << endl;
 
         if (input[0] == "LED") {
             cout << "calling led" << endl;

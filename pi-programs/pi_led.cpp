@@ -115,7 +115,7 @@ int main() {
         getline(cin, input, '\n');
         led.formatInput(input);
         led.setLed();
-        //led.getLed();
+        led.getLed();
     }
 
     return 0;
